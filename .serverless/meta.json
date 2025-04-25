@@ -1,0 +1,76 @@
+{
+  "/Users/jumyeonggil/code-workspace/cloud-interaction/serverless.yml": {
+    "versionFramework": "4.14.1",
+    "servicePath": "/Users/jumyeonggil/code-workspace/cloud-interaction/serverless.yml",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "cloud-interaction",
+      "frameworkVersion": "4",
+      "provider": {
+        "name": "aws",
+        "runtime": "python3.13",
+        "stage": "dev",
+        "region": "ap-northeast-2",
+        "profile": "backend",
+        "logRetentionInDays": 3,
+        "timeout": 30,
+        "architecture": "arm64",
+        "iam": {
+          "role": "arn:aws:iam::021889793243:role/open-template-chatbot-dev-ap-northeast-2-lambdaRole"
+        }
+      },
+      "package": {
+        "individually": true
+      },
+      "plugins": [
+        "serverless-python-requirements"
+      ],
+      "functions": {
+        "chatbot": {
+          "handler": "open_template_chatbot.main.handler",
+          "timeout": 30,
+          "memorySize": 128,
+          "package": {
+            "patterns": [
+              "!node_modules/**",
+              "!yarn.lock",
+              "!package-lock.json",
+              "!package.json",
+              "!poetry.lock"
+            ]
+          },
+          "url": true,
+          "events": [
+            {
+              "httpApi": {
+                "path": "/cloud",
+                "method": "post"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "python3.13",
+      "stage": "dev",
+      "region": "ap-northeast-2",
+      "profile": "backend",
+      "logRetentionInDays": 3,
+      "timeout": 30,
+      "architecture": "arm64",
+      "iam": {
+        "role": "arn:aws:iam::021889793243:role/open-template-chatbot-dev-ap-northeast-2-lambdaRole"
+      }
+    },
+    "serviceRawFile": "# \"service\" is the name of this project. This will also be added to your AWS resource names.\nservice: cloud-interaction\nframeworkVersion: '4'\n\nprovider:\n  name: aws\n  runtime: python3.13\n  stage: dev\n  region: ap-northeast-2\n  profile: backend\n  logRetentionInDays: 3\n  timeout: 30\n  architecture: arm64\n  iam:\n    role: arn:aws:iam::021889793243:role/open-template-chatbot-dev-ap-northeast-2-lambdaRole\n  # deploymentBucket:\n  #   name: open-template-chatbot\n  #   serverSideEncryption: AES256\n\n  # iam:\n  #   # Instruct Serverless to use an existing IAM role for all Lambda functions\n  #   role: arn:aws:iam::XXXXXX:role/role\n  #   # OR configure the role that will be created by Serverless (simplest):\n  #   role:\n  #     # Add statements to the IAM role to give permissions to Lambda functions\n  #     statements:\n  #       - Effect: Allow\n  #         Action:\n  #           - 's3:ListBucket'\n  #         Resource:\n  #           Fn::Join:\n  #             - ''\n  #             - - 'arn:aws:s3:::'\n  #               - Ref: ServerlessDeploymentBucket\n\n  # apiGateway:\n  #   minimumCompressionSize: 1024\n\npackage:\n  individually: true\n\nplugins:\n  - serverless-python-requirements\n\nfunctions:\n  chatbot:\n    handler: open_template_chatbot.main.handler\n    timeout: 30\n    memorySize: 128\n    package:\n      patterns:\n        - \"!node_modules/**\"\n        - \"!yarn.lock\"\n        - \"!package-lock.json\"\n        - \"!package.json\"\n        - \"!poetry.lock\"\n    url: true\n    events:\n      - httpApi:\n          path: /cloud\n          method: post\n",
+    "command": [],
+    "options": {},
+    "serviceProviderAwsCfStackId": null,
+    "serviceProviderAwsCfStackCreated": null,
+    "serviceProviderAwsCfStackUpdated": null,
+    "serviceProviderAwsCfStackStatus": null,
+    "serviceProviderAwsCfStackOutputs": null
+  }
+}
