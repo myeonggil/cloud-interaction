@@ -7,8 +7,10 @@ from google.oauth2 import service_account
 
 
 async def main():
+    with open("/Users/jumyeonggil/code-workspace/cloud-interaction/client_secret.json") as client_info:
+        client_info = json.load(client_info)
     storage_account = service_account.Credentials.from_service_account_file(
-        # info=client_info
+        info=client_info
     )
     gcp_client = billing_v1.CloudBillingAsyncClient(credentials=storage_account)
 
