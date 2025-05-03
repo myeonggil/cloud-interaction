@@ -1,10 +1,12 @@
+import boto3
 import asyncio
 import os
-import pandas
 
 from google.cloud import bigquery
 from google.oauth2 import service_account
 from dotenv import load_dotenv
+
+from mypy_boto3_ce import CostExplorerClient
 
 load_dotenv("./cloud_interaction/.env")
 client_info = {
@@ -22,7 +24,21 @@ client_info = {
 }
 
 
-async def main():
+def get_aws_billing():
+    session = boto3.Session(profile_name='backend', region_name='ap-northeast-2')
+    client: CostExplorerClient = session.client("ce")
+
+    res = client.get_cost_and_usage(
+        TimePeriod={
+            "Start": '2025-04-01',
+            "End": '2025-04-24'
+        },
+        Granularity='DAILY',
+        Metrics=["UnblendedCost", "UsageQuantity"]
+    )
+
+
+def get_gcp_billing():
     storage_account = service_account.Credentials.from_service_account_info(
         info=client_info
     )
@@ -41,10 +57,9 @@ async def main():
     )
 
     # Handle the response
-    data_frame: pandas.DataFrame = data.to_dataframe()
-    total_cost, total_credits = data_frame.total_cost[0], data_frame.total_credits[0]
-    return total_cost + total_credits
+    data_frame = data.to_dataframe()
+    print(data_frame.head())
 
 
-if __name__ == '__main__':
-    asyncio.run(main())
+def interact_cloud_billing(event, context):
+    pass
